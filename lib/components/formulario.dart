@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 class Formulario extends StatelessWidget {
   final String titulo;
   final bool possuiLabel;
+  final bool tecladoNumerico;
   final double largura;
-  const Formulario(
-      {required this.possuiLabel,
-      required this.largura,
-      required this.titulo,
-      Key? key})
-      : super(key: key);
+  final void Function()? fun;
+  final List<Map<String, String>>? categoria;
+  // final TextEditingController controller;
+  const Formulario({
+    this.fun,
+    this.categoria,
+    // required this.controller,
+    required this.tecladoNumerico,
+    required this.possuiLabel,
+    required this.largura,
+    required this.titulo,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,8 @@ class Formulario extends StatelessWidget {
       height: tamanho.width * 0.13,
       width: largura,
       child: TextField(
-        keyboardType: TextInputType.name,
+        keyboardType:
+            tecladoNumerico ? TextInputType.number : TextInputType.name,
         decoration: InputDecoration(
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -42,6 +51,8 @@ class Formulario extends StatelessWidget {
             ),
           ),
         ),
+        onTap: fun,
+        // controller: controller,
       ),
     );
   }

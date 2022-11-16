@@ -1,49 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pendencia_faturamento/components/inform_cabecalho.dart';
 
+import '../data/repositorio.dart';
 import 'caixa_de_texto.dart';
 
-class Cabecalho extends StatefulWidget {
-  const Cabecalho({Key? key}) : super(key: key);
-
-  @override
-  State<Cabecalho> createState() => _CabecalhoState();
-}
-
-class _CabecalhoState extends State<Cabecalho> {
+class Cabecalho extends StatelessWidget {
+  Cabecalho({Key? key}) : super(key: key);
+  final Repositorio repositoriaPego = Get.put(Repositorio());
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Text(
-              "Cabeçalho de Nota",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.blue,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
+        children: [
+          const InformCabecalho(
+            cabecalho: "Cabeçalho de Nota",
+            negrito: true,
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Text(
-              "Preencha as informações de cabeçalho do pedido",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.blue,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+          const InformCabecalho(
+            cabecalho: "Preencha as informações de cabeçalho do pedido",
+            negrito: false,
           ),
-          CaixaDeTexto(titulo: "Empresa", obrigatorio: true),
-          CaixaDeTexto(titulo: "Perceiro", obrigatorio: true),
-          CaixaDeTexto(titulo: "Linha do Procedimento", obrigatorio: true),
-          CaixaDeTexto(titulo: "Cód. Representante", obrigatorio: false),
-          CaixaDeTexto(titulo: "Gerente", obrigatorio: false),
-          CaixaDeTexto(titulo: "Cód. Gerente", obrigatorio: false),
+
+          ///Formilários para preenchimento das informações
+          CaixaDeTexto(
+            titulo: "Empresa",
+            obrigatorio: true,
+            categoria: repositoriaPego.empresa,
+          ),
+          CaixaDeTexto(
+            titulo: "Perceiro",
+            obrigatorio: true,
+            categoria: repositoriaPego.parceiro,
+          ),
+          CaixaDeTexto(
+            titulo: "Linha do Procedimento",
+            obrigatorio: true,
+            categoria: repositoriaPego.procedimento,
+          ),
+          const CaixaDeTexto(
+            titulo: "Cód. Representante",
+            obrigatorio: false,
+            categoria: [],
+          ),
+          const CaixaDeTexto(
+            titulo: "Gerente",
+            obrigatorio: false,
+            categoria: [],
+          ),
+          const CaixaDeTexto(
+            titulo: "Cód. Gerente",
+            obrigatorio: false,
+            categoria: [],
+          ),
         ],
       ),
     );

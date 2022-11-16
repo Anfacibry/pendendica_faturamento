@@ -33,14 +33,14 @@ class TelaPendenciaFaturamento extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Cabecalho(),
             ),
-            Center(child: Text("Catálogo")),
-            Center(child: Text("Carrinho")),
+            const Center(child: Text("Catálogo")),
+            const Center(child: Text("Carrinho")),
           ],
         ),
       ),

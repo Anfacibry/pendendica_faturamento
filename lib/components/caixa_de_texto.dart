@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:pendencia_faturamento/components/dados_no_card.dart';
+
 import 'formulario.dart';
 
-class CaixaDeTexto extends StatefulWidget {
+class CaixaDeTexto extends StatelessWidget {
   final String titulo;
   final bool obrigatorio;
-  const CaixaDeTexto(
-      {required this.obrigatorio, required this.titulo, Key? key})
-      : super(key: key);
+  final List<Map<String, String>> categoria;
+  const CaixaDeTexto({
+    required this.categoria,
+    required this.obrigatorio,
+    required this.titulo,
+    Key? key,
+  }) : super(key: key);
 
-  @override
-  State<CaixaDeTexto> createState() => _CaixaDeTextoState();
-}
-
-class _CaixaDeTextoState extends State<CaixaDeTexto> {
   @override
   Widget build(BuildContext context) {
     Size tamanho = MediaQuery.of(context).size;
@@ -26,18 +27,24 @@ class _CaixaDeTextoState extends State<CaixaDeTexto> {
             Formulario(
               possuiLabel: false,
               largura: tamanho.width * 0.13,
-              titulo: widget.titulo,
+              titulo: titulo,
+              tecladoNumerico: true,
             ),
-            SizedBox(
-              height: tamanho.width * 0.13,
-              child: const Center(child: Icon(Icons.search)),
+            InkWell(
+              onTap: () => showDialogo(categoria, context, tamanho),
+              child: SizedBox(
+                height: tamanho.width * 0.13,
+                child: const Center(child: Icon(Icons.search)),
+              ),
             ),
             Formulario(
               possuiLabel: true,
               largura: tamanho.width * 0.7,
-              titulo: widget.titulo,
+              titulo: titulo,
+              tecladoNumerico: false,
+              fun: () => showDialogo(categoria, context, tamanho),
             ),
-            if (widget.obrigatorio)
+            if (obrigatorio)
               const Padding(
                 padding: EdgeInsets.all(3),
                 child: Text(
@@ -53,4 +60,45 @@ class _CaixaDeTextoState extends State<CaixaDeTexto> {
       ),
     );
   }
+}
+
+void showDialogo(
+  List<Map<String, String>> categoria,
+  BuildContext context,
+  Size tamanho,
+) {
+  TextEditingController controller = TextEditingController();
+  showDialog(
+    context: context,
+    builder: (contextDialog) {
+      return AlertDialog(
+        title: TextField(
+          decoration: const InputDecoration(
+            labelText: "Pesquisa pelo código ou descrição",
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.blue,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
+          controller: controller,
+        ),
+        content: SizedBox(
+          height: tamanho.height * .6,
+          width: tamanho.width * .8,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: categoria.length,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {},
+              child: DadosNoCard(
+                chave: categoria[index]["chave"].toString(),
+                valor: categoria[index]["descricao"].toString(),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
